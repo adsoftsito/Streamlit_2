@@ -4,3 +4,4 @@ datetime
 matplotlib
 pyplot
 matplotlib.pyplot
+plotly

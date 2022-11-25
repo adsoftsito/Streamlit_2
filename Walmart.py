@@ -65,11 +65,10 @@ df_p['Percentage'] = (df_p['Counts'] / df_p['Counts'].sum()) * 100
 
 
 fig = px.pie(df_p, values='Percentage', names='Region', title='Ventas por región de WaltMart USA')
-fig.show()
+st.plotly_chart(fig)
 
 
 fig3 = px.histogram(data, x="Discount")
-fig3.show()
 st.plotly_chart(fig3)
 
 @st.cache

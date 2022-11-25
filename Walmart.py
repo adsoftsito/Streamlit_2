@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
-#import matplotlib.pyplot as plt
-from matplotlib import pyplot as plt
+import plotly.express as px
 import numpy as np
 
 
@@ -42,15 +41,19 @@ if agree:
     st.dataframe(data)
 
 data = pd.read_csv(DATA_URL)
-fig2, ax2 = plt.subplots()
-y_pos = data['Ship Mode']
-x_pos = data['Sales']
-ax2.barh(y_pos, x_pos)
-ax2.set_ylabel("Clase")
-ax2.set_xlabel("Ventas")
-ax2.set_title('Ventas por clase')
+
 st.header("Grafica de Barras de Walmart")
-st.pyplot(fig2)
+
+fig1 = px.bar(data, x='Ship Mode', y='Sales',title='Ventas por clase')
+fig1.update_layout(
+    xaxis = dict(
+        tickmode = 'linear',
+        tick0 = 0,
+        dtick = 1
+    )
+)
+
+st.plotly_chart(fig1)
 
 
 data = pd.read_csv(DATA_URL)
@@ -60,19 +63,14 @@ df_p['percentage'] = df_p.groupby(['Counts']).size().groupby(level=0).apply(lamb
 df_p.columns = ['Region' ,'Counts', 'Percentage']
 df_p['Percentage'] = (df_p['Counts'] / df_p['Counts'].sum()) * 100
 
-fig1, ax1 = plt.subplots()
-ax1.pie(df_p['Percentage'], labels=df_p['Region'], autopct='%1.1f%%',
-        shadow=True, startangle=90)
-ax1.axis('equal')  
-st.header("Ventas por región de WaltMart USA")
 
-st.pyplot(fig1)
+fig = px.pie(df_p, values='Percentage', names='Region', title='Ventas por región de WaltMart USA')
+fig.show()
 
-st.header("Histograma de descuentos WaltMart USA")
-fig, ax = plt.subplots()
-ax.hist(data['Discount'], bins=20)
 
-st.pyplot(fig)
+fig3 = px.histogram(data, x="Discount")
+fig3.show()
+st.plotly_chart(fig3)
 
 @st.cache
 def load_data(nrows):
